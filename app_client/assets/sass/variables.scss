@@ -1,0 +1,24 @@
+@import "bootstrap/variables";
+
+$base-color: #000;
+
+$gray-darkest: lighten($base-color, 7.5%);
+$gray-darker: lighten($base-color, 14%);
+$gray-dark: lighten($base-color, 20%);
+$gray: lighten($base-color, 40%);
+$gray-medium: lighten($base-color, 50%);
+$gray-light: lighten($base-color, 60%);
+$gray-light: lighten($base-color, 72%);
+$gray-lightest: lighten($base-color, 97.25%);
+
+$brand-primary: #428bca;
+$brand-success: #5cb85c;
+$brand-info: #5bc0de;
+$brand-warning: #f0ad4e;
+$brand-danger: #d9534f;
+
+
+$color-primary: #A2D9DA;
+$color-focus: #000D79;
+$color-danger: #e74c3c;
+$placeholder-text: #bbbbbb;

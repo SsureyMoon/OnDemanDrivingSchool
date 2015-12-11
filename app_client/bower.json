@@ -1,0 +1,20 @@
+{
+  "name": "app_client",
+  "version": "0.0.0",
+  "authors": [
+    "Ssurey Moon"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap-sass": "~3.3.6",
+    "font-awesome-sass": "~4.4.0",
+    "jquery.cookie": "~1.4.1"
+  }
+}

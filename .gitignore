@@ -1,0 +1,44 @@
+# common files
+.git/
+.DS_Store
+
+# front-end files
+app_client/.sass-cache/
+app_client/node_modules/
+app_client/bower_components/
+app_client/compiled/
+
+app_client/assets/sass/*
+!app_client/assets/sass/variables.scss
+!app_client/assets/sass/mixins.scss
+!app_client/assets/sass/app-bootstrap.scss
+!app_client/assets/sass/application.scss
+!app_client/assets/sass/_bootstrap-custom.scss
+!app_client/assets/sass/font-awesome/font-awesome-custom.scss
+
+app_clientassets/css/*
+app_clientassets/js/*
+app_clientassets/fonts/*
+
+# back-end files
+backend/.idea/
+*.pyc
+*.log
+*.py[codt]
+
+# C extensions
+*.so
+
+# Packages
+*.egg
+*.egg-info
+
+# Installer logs
+backend/pip-log.txt
+
+# Unit test / coverage reports
+backend/.coverage
+backend/.tox
+backend/nosetests.xml
+
+backend/staticfiles
