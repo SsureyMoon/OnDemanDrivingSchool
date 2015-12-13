@@ -16,9 +16,9 @@ app_client/assets/sass/*
 !app_client/assets/sass/_bootstrap-custom.scss
 !app_client/assets/sass/font-awesome/font-awesome-custom.scss
 
-app_clientassets/css/*
-app_clientassets/js/*
-app_clientassets/fonts/*
+app_client/assets/css/*
+app_client/assets/js/*
+app_client/assets/fonts/*
 
 # back-end files
 backend/.idea/
