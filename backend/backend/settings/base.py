@@ -1,6 +1,6 @@
 import sys
 from os import path
-
+import datetime
 
 PROJECT_ROOT = path.dirname(path.dirname(path.abspath(__file__))) # project_dir
 BASE_DIR = path.dirname(PROJECT_ROOT) # settings
@@ -11,7 +11,7 @@ CLIENT_APP_DIR = path.join(path.dirname(BASE_DIR), "app_client")
 
 
 sys.path.insert(0, path.abspath(APP_DIR))
-sys.path.insert(0, path.abspath(ASSET_DIR))
+sys.path.insert(0, path.abspath(ASSET_DIR)) # currently empty
 
 
 AUTH_USER_MODEL = 'profiles.User'
@@ -65,7 +65,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.security.SecurityMiddleware',
 )
 
-CSRF_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = False
 
 ROOT_URLCONF = 'backend.urls'
 
@@ -77,23 +77,24 @@ TEMPLATES = [
             path.join(PROJECT_ROOT, "templates"),
             path.join(CLIENT_APP_DIR, "")
         ],
-        'APP_DIRS': True,
+        'APP_DIRS': False,
         'OPTIONS': {
             'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.core.context_processors.debug',
+                'django.core.context_processors.i18n',
+                'django.core.context_processors.media',
+                'django.core.context_processors.static',
+                'django.core.context_processors.request',
             ],
+            'loaders': [
+                'django.template.loaders.filesystem.Loader',
+                'django.template.loaders.app_directories.Loader'
+            ]
         },
     },
 ]
-
-
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader'
-)
 
 
 WSGI_APPLICATION = 'backend.wsgi.application'
@@ -139,7 +140,7 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
 
-APP_DIR = path.join(PROJECT_ROOT, "media")
+MEDIA_ROOT = path.join(PROJECT_ROOT, "media")
 MEDIA_URL = '/media/'
 
 
@@ -150,11 +151,15 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
     ),
-    'DEFAULT_RENDERER_CLASSES': (
-        'rest_framework.renderers.JSONRenderer',
-        'rest_framework.renderers.BrowsableAPIRenderer',
-        'rest_framework.renderers.AdminRenderer',
-    ),
+    # 'DEFAULT_RENDERER_CLASSES': (
+    #     'rest_framework.renderers.JSONRenderer',
+    #     'rest_framework.renderers.BrowsableAPIRenderer',
+    #     'rest_framework.renderers.AdminRenderer',
+    # ),
+}
+
+JWT_AUTH = {
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(hours=1)
 }
 
 LOGGING = {

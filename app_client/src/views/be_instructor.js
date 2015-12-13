@@ -1,32 +1,40 @@
 app.Views.createInstructor = Backbone.View.extend({
     el: "#template-content",
     id: 'be-instructor-holder',
-    template: 'be_instructor.html',
+    formTemplate: 'be_instructor_form.html',
+    profileTemplate: 'be_instructor_profile.html',
     events: {
         'submit form#be-instructor-form': 'beInstructorRequest',
         "change input[type=file]" : "encodeFile"
     },
-    initialize: function(){
-        this.render();
+    initialize: function(options){
+        var _this = this;
+        this.template = this.formTemplate;
+        this.user = options.user
+        this.user.fetch()
+            .success(function(model, response){
+            })
+            .error(_.bind(app.Helpers.errorHandler, this));
+        this.user.on('change', _.bind(this.render, this));
     },
     render: function(){
         var _this = this;
 
-        app.Helpers.templateLoader(this.template).then(function(templateData){
-            _this.$el.html(templateData);
-        }, function(){
-            console.log("failed");
-        });
+        var userJSON = this.user.toJSON();
+        this.template = userJSON.is_instructor ? this.profileTemplate : this.formTemplate;
+
+        app.Helpers.templateLoader(this.template, this.user.toJSON())
+            .then(function(templateData){
+                _this.$el.html(templateData);
+            }, function(){
+                console.log("failed");
+            });
         return this
     },
     beInstructorRequest: function(e){
         e.preventDefault();
         var formData = this.getFormData('#'+e.target.id);
         this.model.attributes = _.extend(this.model.attributes, formData);
-        console.log('formData');
-        console.log(formData);
-        console.log('this.model');
-        console.log(this.model);
         this.model.register();
         return this;
     },
@@ -50,7 +58,6 @@ app.Views.createInstructor = Backbone.View.extend({
             //set model
             var object = {};
             object[e.currentTarget.name] = fileEvent.target.result;
-            console.log(object);
             this.model.set(object);
         }, this);
 

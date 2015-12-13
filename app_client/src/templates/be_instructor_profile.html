@@ -1,0 +1,26 @@
+<div class="container">
+    <div class="form-holder">
+        <div id="be-instructor">
+            <div class="panel-heading">
+                <h3 class="panel-title">Instructor Profile</h3>
+            </div>
+            <!-- List group -->
+            <ul class="list-group">
+                <li class="list-group-item"><%= username %></li>
+                <li class="list-group-item"><%= email %></li>
+                <li class="list-group-item"><% if(is_instructor) {
+                    print("Valid Instructor");
+                } else {
+                    print("Valid Student");
+                } %></li>
+                <li class="list-group-item">Joined at <%= date_joined %></li>
+            </ul>
+
+            <ul class="list-group">
+                <li class="list-group-item"><%= instructor.zipcode %></li>
+                <li class="list-group-item"><%= instructor.date_started %></li>
+                <li class="list-group-item"><%= instructor.lat_long_points %></li>
+            </ul>
+        </div>
+    </div>
+</div>

@@ -1,9 +1,11 @@
 <div class="container">
-    <div class="input-group">
-      <input type="text" class="form-control search-form" placeholder="ZIP or address to find instructors..">
-      <span class="input-group-btn">
-        <button class="btn btn-default" type="button">Search</button>
-      </span>
-    </div><!-- /input-group -->
+    <form rol="form" method="post" id="search-instructor-form">
+        <div class="input-group">
+          <input type="text" id="zip-or-address" class="form-control search-form" placeholder="ZIP or address to find instructors..">
+          <span class="input-group-btn">
+            <button class="btn btn-default" id="search-button" type="submit">Search</button>
+          </span>
+        </div><!-- /input-group -->
+    </form>
     <div id="map"></div>
 </div>

@@ -1,28 +1,31 @@
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
+from core.mixins import ProfileFieldMixin
 from .models import User
 
 
-class UserSerializer(serializers.ModelSerializer):
+class UserSerializer(ProfileFieldMixin, serializers.ModelSerializer):
 
-    profile_img = serializers.SerializerMethodField('get_image_url', allow_null=True)
+    def __init__(self, *args, **kwargs):
+        super(UserSerializer, self).__init__(*args, **kwargs)
+        self.get_profile_img = self.get_image_url('profile_img')
+
+    profile_img = serializers.SerializerMethodField(allow_null=True)
+    is_instructor = serializers.SerializerMethodField(default=False)
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'email', 'first_name', 'last_name', 'profile_img',)
+        fields = ('id', 'username', 'email', 'first_name', 'last_name', 'profile_img', 'date_joined', 'is_instructor')
         read_only_fields = ('username', )
 
-    def get_image_url(self, obj):
-        if not obj.profile_img:
-            return None
-        return obj.profile_img.url
-#
-#
-# def validate_email_unique(value):
-#     exists = User.objects.filter(email=value)
-#     if exists:
-#         raise serializers.ValidationError("Email address %s already exists, must be unique" % value)
+    def get_is_instructor(self, obj):
+        try:
+            instructor = obj.instructors
+        except:
+            return False
+        else:
+            return bool(instructor)
 
 
 class CreateUserSerializer(serializers.ModelSerializer):

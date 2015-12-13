@@ -5,7 +5,18 @@ app.Models.Instructor = Backbone.Model.extend({
 
 
 app.Collections.Instructors = Backbone.Collection.extend({
-    model: app.Models.Instructor
+    url: 'http://local-pm.app.dev/api/v1/instructors/',
+    model: app.Models.Instructor,
+    origin: 1,
+    search: function(query){
+        return this.fetch({
+            data: query,
+            processData: true
+        });
+    },
+    parse: function(response){
+        return response.instructors;
+    }
 })
 
 
@@ -23,17 +34,11 @@ app.Models.createInstructorModel = Backbone.Model.extend({
 		}
     },
     register: function(){
-        console.log('this')
-        console.log(this)
         this.save()
             .success(function(e){
                 // let's log in and get token
-                console.log(this);
-                console.log('success')
             })
             .error(function(e){
-                console.log(e);
-                console.log('fail')
             });
         return this;
     }

@@ -22,7 +22,7 @@ from rest_framework.reverse import reverse_lazy
 from rest_framework.routers import DefaultRouter
 
 from profiles.views import UserViewSet
-from instructors.views import InstructorView
+from instructors.views import InstructorView, InstructorModelView
 from core.views import home
 
 
@@ -36,7 +36,9 @@ urlpatterns = [
     url(r'^api/v1/users/me/', include('profiles.urls', namespace="profiles")),
     url(r'^api/v1/', include('authentication.urls')),
     url(r'^api/v1/', include(router.urls)),
-    url(r'^api/v1/instructors', InstructorView.as_view()),
+    url(r'^api/v1/instructors/(?P<id>\w+)/', InstructorModelView.as_view()),
+    url(r'^api/v1/instructors/', InstructorView.as_view()),
+
     url(r'^$', home),
 
     # the 'api-root' from django rest-frameworks default router

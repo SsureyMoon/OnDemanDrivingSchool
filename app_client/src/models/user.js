@@ -29,12 +29,8 @@ app.Models.SignUpModel = Backbone.Model.extend({
         this.save()
             .success(function(e){
                 // let's log in and get token
-                console.log(this);
-                console.log('success')
             })
             .error(function(e){
-                console.log(e);
-                console.log('fail')
             });
         return this;
     }
@@ -58,8 +54,6 @@ app.Models.LoginModel = Backbone.Model.extend({
 
     login: function(formData){
         var nextView = app.Global.nextView || "search";
-        console.log("nextView");
-        console.log(nextView);
         this.set(formData);
         this.save()
             .success(_.bind(function(resp){

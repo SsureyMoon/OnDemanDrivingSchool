@@ -8,6 +8,7 @@ from rest_framework.views import APIView
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework_jwt.settings import api_settings
 
+from instructors.serializer import InstructorSerializer
 from .serializer import UserSerializer, CreateUserSerializer
 from .models import User
 from .permissions import IsOwnerOrReadOnly
@@ -20,15 +21,14 @@ class ProfileView(APIView):
 
     def get(self, request, *args, **kwargs):
         user = request.user
-        print user
+        serializer = UserSerializer(user)
 
-        data = dict()
-        data["username"] = user.username
-        data["email"] = user.username
-        data["profile_img"] = user.profile_img and user.profile_img.url or None
-        data["is_instructor"] = False
-        data["date_joined"] = user.date_joined
-        data["id"] = user.id
+        data = serializer.data
+
+        if data.get('is_instructor'):
+            instructor = user.instructors
+            serializer = InstructorSerializer(instructor)
+            data['instructor'] = serializer.data
 
         return Response(data)
 
@@ -47,6 +47,7 @@ class UserViewSet(mixins.CreateModelMixin,
     permission_classes = (IsOwnerOrReadOnly,)
 
     def get(self, request, *args, **kwargs):
+
         return Response(self.user)
 
     def create(self, request, *args, **kwargs):
@@ -69,6 +70,7 @@ class UserViewSet(mixins.CreateModelMixin,
         data["token"] = create_jwt_token(user)
         data["expire"] = api_settings.JWT_EXPIRATION_DELTA.total_seconds()
         del data['password']
+
         return Response(data)
 
 
@@ -79,5 +81,7 @@ def create_jwt_token(user):
     if user:
         payload = jwt_payload_handler(user)
         token = jwt_encode_handler(payload)
+
         return token
+
     return None

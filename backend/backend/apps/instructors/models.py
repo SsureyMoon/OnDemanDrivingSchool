@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 from django.conf import settings
 from django.contrib.gis.db import models as gis_models
 from django.contrib.gis.geos import Point
+from django.contrib.gis.measure import Distance
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.db import models
@@ -9,8 +10,22 @@ from django.db import models
 from core.utils import GenerateRandomFilename
 from geopy import GoogleV3
 
+
 generate_random_filename_for_car_img = GenerateRandomFilename('car_img')
 generate_random_filename_for_license_img = GenerateRandomFilename('license_img')
+
+
+class InstructorsManager(gis_models.GeoManager):
+
+    use_for_related_fields = True
+
+    def get_near_instructors(self, lat, lon, distance=None, *args, **kwargs):
+        if not distance:
+            distance = 1
+        current_point = Point(lon, lat)
+
+        return self.filter(
+            lat_long_points__distance_lte=(current_point, Distance(km=distance)), **kwargs)
 
 
 class Instructors(gis_models.Model):
@@ -34,13 +49,14 @@ class Instructors(gis_models.Model):
     def __unicode__(self):
         return self.user.username
 
-    objects = gis_models.GeoManager()
+    objects = InstructorsManager()
 
     def save(self, *args, **kwargs):
         if not self.lat_long_points:
             geolocator = GoogleV3()
             location = geolocator.geocode(self.zipcode.encode('utf-8'))
             if location:
-                print Point((location.latitude, location.longitude,))
-                self.lat_long_points = Point((location.latitude, location.latitude,))
+                self.lat_long_points = Point((location.longitude, location.latitude,))
+
         return super(Instructors, self).save(*args, **kwargs)
+

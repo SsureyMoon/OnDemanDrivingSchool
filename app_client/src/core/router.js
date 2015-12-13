@@ -7,7 +7,8 @@ app.Router = Backbone.Router.extend({
         'login': 'login',
         'search': 'search',
         'be-instructor':'beInstructor',
-        '*actions': 'index'
+        'instructors/:id': 'selectInstructor',
+        '*actions': 'index',
     },
 
     index: function(){
@@ -41,8 +42,13 @@ app.Router = Backbone.Router.extend({
         if(!app.Helpers.hasCookie('jwt_token')){
             this.navigate('login', { trigger: true, replace: true });
         } else {
+            var userModel = new app.Models.User();
             var createInstructorModel = new app.Models.createInstructorModel();
-            new app.Views.createInstructor({ model: createInstructorModel });
+            new app.Views.createInstructor({ user: userModel, model: createInstructorModel });
         }
+    },
+    selectInstructor: function(id){
+        console.log('selectInstructor');
+        console.log(id);
     }
 })

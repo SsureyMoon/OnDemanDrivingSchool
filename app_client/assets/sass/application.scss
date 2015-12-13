@@ -605,6 +605,9 @@ form {
         width: 30%;
         margin: auto 2.5%;
         text-transform: uppercase;
+        &#search-button {
+            width: 100%;
+        }
     }
     a {
         margin: auto 2.5%;
@@ -624,5 +627,38 @@ form {
     height: 400px;
     @media screen and (min-width: 768px){
         height: 500px;
+    }
+}
+
+span.stars, span.stars span {
+    display: block;
+    background: url('/assets/img/stars.png') 0 -20px repeat-x;
+    background-size: 20px 40px;
+    width: 100px;
+    height: 20px;
+    @media screen and (min-width: 768px){
+        background: url('/assets/img/stars.png') 0 -30px repeat-x;
+        background-size: 30px 60px;
+        width: 150px;
+        height: 30px;
+    }
+
+}
+
+span.stars span {
+    background-position: 0 0;
+}
+
+div .right {
+    position: absolute;
+    right: 10px;
+}
+
+img.car-img {
+    width: auto;
+    height: 100px;
+    @media screen and (min-width: 768px){
+        width: 100%;
+        height: auto;
     }
 }
