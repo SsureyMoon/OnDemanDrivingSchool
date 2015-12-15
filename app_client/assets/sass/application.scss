@@ -662,3 +662,15 @@ img.car-img {
         height: auto;
     }
 }
+
+div.mobile-footer {
+    visibility: hidden;
+    @media only screen and (max-width: 780px){
+        visibility: visible;
+        width: 100%;
+        bottom: 0;
+        position: fixed;
+        z-index: 999;
+        display: block;
+    }
+}

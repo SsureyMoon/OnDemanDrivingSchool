@@ -99,9 +99,6 @@ app.Views.Search = Backbone.View.extend({
                 maxWidth: maxWidth
             });
             infowindow.addListener('domready', function(e){
-                console.log('e');
-                console.log(e);
-                console.log(this);
                 $('span.stars').stars(starSize);
             })
 

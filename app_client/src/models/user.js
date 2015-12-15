@@ -26,13 +26,7 @@ app.Models.SignUpModel = Backbone.Model.extend({
     },
     signup: function(formData){
         this.set(formData);
-        this.save()
-            .success(function(e){
-                // let's log in and get token
-            })
-            .error(function(e){
-            });
-        return this;
+        return this.save();
     }
 });
 
@@ -53,31 +47,8 @@ app.Models.LoginModel = Backbone.Model.extend({
     },
 
     login: function(formData){
-        var nextView = app.Global.nextView || "search";
         this.set(formData);
-        this.save()
-            .success(_.bind(function(resp){
-                // let's login and get token
-                this.saveToken();
-                Backbone.history.navigate(nextView, { trigger: true, replace: true });
-            }, this))
-            .error(_.bind(app.Helpers.errorHandler, this));
-    },
-
-    saveToken: function(){
-        var token = this.get('token');
-
-        var expire = new Date(new Date().setSeconds(this.get('expire')));
-        var cookieOpts = {
-            domain:'local-pm.app.dev',
-            path: '/',
-            expires: expire
-        };
-
-        $.cookie('jwt_token', token, cookieOpts)
-
-        app.Helpers.setTokenHeader();
-
+        return this.save();
     }
 });
 

@@ -20,7 +20,7 @@ app.Collections.Instructors = Backbone.Collection.extend({
 })
 
 
-app.Models.createInstructorModel = Backbone.Model.extend({
+app.Models.CreateInstructorModel = Backbone.Model.extend({
     url: 'http://local-pm.app.dev/api/v1/instructors/',
     validation: {
         location: {

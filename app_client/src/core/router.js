@@ -5,6 +5,7 @@ app.Router = Backbone.Router.extend({
         '': 'index',
         'profile': 'profile',
         'login': 'login',
+        'logout': 'logout',
         'search': 'search',
         'be-instructor':'beInstructor',
         'instructors/:id': 'selectInstructor',
@@ -15,10 +16,12 @@ app.Router = Backbone.Router.extend({
         this.navigate('/', {trigger:true, replace: true})
     },
 
+    // before every view, we need to athenticate
     profile: function(){
         app.Global.nextView = "profile";
-        if(!app.Helpers.hasCookie('jwt_token')){
-            this.navigate('login', { trigger: true, replace: true });
+        var auth = new app.Models.Authentication();
+        if(!auth.hasLocalToken()){
+            this.navigate('login', { trigger: true, replace: true});
         } else {
             var userModel = new app.Models.User();
             new app.Views.Profile({ model: userModel });
@@ -40,15 +43,20 @@ app.Router = Backbone.Router.extend({
     beInstructor: function(){
         app.Global.nextView = "be-instructor";
         if(!app.Helpers.hasCookie('jwt_token')){
-            this.navigate('login', { trigger: true, replace: true });
+            this.navigate('login', { trigger: true, replace: true});
         } else {
             var userModel = new app.Models.User();
-            var createInstructorModel = new app.Models.createInstructorModel();
-            new app.Views.createInstructor({ user: userModel, model: createInstructorModel });
+            var createInstructorModel = new app.Models.CreateInstructorModel();
+            new app.Views.CreateInstructor({ user: userModel, model: createInstructorModel });
         }
     },
     selectInstructor: function(id){
-        console.log('selectInstructor');
-        console.log(id);
+        new app.Views.CheckInstructor();
+    },
+    logout: function(){
+        var nextView = app.Global.nextView || 'search';
+        var auth = new app.Models.Authentication();
+        auth.logout();
+        this.navigate(nextView, {trigger:true, replace: true})
     }
 })

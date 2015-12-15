@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework_jwt.compat import get_request_data
 from rest_framework_jwt.serializers import JSONWebTokenSerializer
 from rest_framework_jwt.settings import api_settings
-from rest_framework_jwt.views import JSONWebTokenAPIView
+from rest_framework_jwt.views import JSONWebTokenAPIView, RefreshJSONWebToken, jwt_response_payload_handler
 
 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
 jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
@@ -53,6 +53,25 @@ class CustomObtainJSONWebToken(JSONWebTokenAPIView):
 
     def post(self, request):
         serializer = self.serializer_class(
+            data=get_request_data(request)
+        )
+
+        if serializer.is_valid():
+            user = serializer.object.get('user') or request.user
+
+            token = serializer.object.get('token')
+            data = dict()
+            data["token"] = token
+            data["expire"] = api_settings.JWT_EXPIRATION_DELTA.total_seconds()
+
+            return Response(data)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class CustomRefreshJSONWebToken(RefreshJSONWebToken):
+
+    def post(self, request):
+        serializer = self.get_serializer(
             data=get_request_data(request)
         )
 

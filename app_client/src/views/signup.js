@@ -23,13 +23,37 @@ app.Views.Signup = Backbone.View.extend({
     },
 
     toggleLogin: function(){
+        this.close();
         new app.Views.Login();
     },
 
     signupRequest: function(e){
+        var nextView = app.Global.nextView || 'search';
         e.preventDefault();
         var formData = this.getFormData('#'+e.target.id);
-        this.model.signup(formData);
+        this.model.signup(formData)
+            .success(_.bind(function(e){
+
+                // let's log in again and get token
+                this.user = new app.Models.LoginModel();
+                this.user.login({
+                    username: formData.useranme,
+                    password: formData.password1
+                })
+                .success(_.bind(function(resp){
+                    // let's login and get token
+                    this.auth = new app.Models.Authentication({
+                        token: resp['token'],
+                        expire: resp['expire']
+                    });
+                    Backbone.history.navigate(nextView, { trigger: true, replace: true});
+                }, this))
+                .error(function(){
+                    Backbone.history.navigate('login', { trigger: true, replace: true});
+                });
+
+            }, this))
+            .error(_.bind(app.Helpers.errorHandler, this));
         return this;
     },
 

@@ -6,6 +6,9 @@ app.Collections = {};
 app.Global = {};
 app.Helpers = {};
 
+/**
+ *
+ */
 app.Helpers.setTokenHeader = function(){
     var token = $.cookie('jwt_token');
     if(!token){
@@ -37,6 +40,9 @@ app.Helpers.errorHandler = function(response){
     }
 }
 
+/**
+ *
+ */
 $.fn.stars = function(starSize) {
     return $(this).each(function() {
         // Get the value

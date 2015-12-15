@@ -1,4 +1,4 @@
-app.Views.createInstructor = Backbone.View.extend({
+app.Views.CreateInstructor = Backbone.View.extend({
     el: "#template-content",
     id: 'be-instructor-holder',
     formTemplate: 'be_instructor_form.html',

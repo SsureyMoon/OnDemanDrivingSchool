@@ -22,13 +22,26 @@ app.Views.Login = Backbone.View.extend({
         return this
     },
     toggleSignup: function(){
+        this.close();
         new app.Views.Signup({model: new app.Models.SignUpModel()});
     },
 
     loginRequest: function(e){
+        var nextView = app.Global.nextView || 'search';
         e.preventDefault();
         var formData = this.getFormData('#'+e.target.id);
-        this.model.login(formData);
+        this.model.login(formData)
+            .success(_.bind(function(resp){
+                // let's login and get token
+                this.auth = new app.Models.Authentication({
+                    token: resp['token'],
+                    expire: resp['expire']
+                });
+
+                Backbone.history.navigate(nextView, { trigger: true, replace: true});
+            }, this))
+            .error(_.bind(app.Helpers.errorHandler, this));
+
         return this;
     },
 
