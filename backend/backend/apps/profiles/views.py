@@ -14,6 +14,8 @@ from .models import User
 from .permissions import IsOwnerOrReadOnly
 
 
+from django.conf import settings
+
 class ProfileView(APIView):
 
     authentication_classes = (JSONWebTokenAuthentication,)

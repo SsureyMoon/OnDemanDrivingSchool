@@ -23,7 +23,7 @@ app.Views.Signup = Backbone.View.extend({
     },
 
     toggleLogin: function(){
-        this.close();
+        // this.close();
         new app.Views.Login();
     },
 
@@ -34,10 +34,11 @@ app.Views.Signup = Backbone.View.extend({
         this.model.signup(formData)
             .success(_.bind(function(e){
 
+
                 // let's log in again and get token
                 this.user = new app.Models.LoginModel();
                 this.user.login({
-                    username: formData.useranme,
+                    username: formData.username,
                     password: formData.password1
                 })
                 .success(_.bind(function(resp){

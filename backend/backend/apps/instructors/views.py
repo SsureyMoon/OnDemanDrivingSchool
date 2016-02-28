@@ -27,7 +27,7 @@ class InstructorView(APIView):
         address = query_dict.get('location')
         distance = query_dict.get('distance')
         geolocator = GoogleV3()
-        location = geolocator.geocode(address.encode('utf-8'))
+        location = geolocator.geocode(address.encode('utf-8'), timeout=10)
         instructors = Instructors.objects.get_near_instructors(
             location.latitude, location.longitude, distance=distance)
 
@@ -68,4 +68,3 @@ class InstructorModelView(APIView):
     def get(self, request, id, *args, **kwargs):
 
         return Response(id)
-
